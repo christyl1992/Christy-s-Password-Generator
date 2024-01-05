@@ -88,10 +88,49 @@ var upperCasedCharacters = [
   'Z'
 ];
 
+
+
+
+
+
+
+
+
 // Function to prompt user for password options
 function getPasswordOptions() {
 
-}
+
+  function getPasswordOptions() {
+    let passwordLength = parseInt(prompt("How long do you want your password to be? (Must be between 8 and 128 characters)"));
+  
+    // Validate password length
+    if (passwordLength < 8 ||  passwordLength > 128) {
+      alert("Invalid input. Password length must be a number and between 8 - 128 characters.");
+      return; // Exit the function if the input is invalid
+    }
+  
+    let includeSpecialCharacters = confirm("Do you want to include special characters?");
+    let includeNumericCharacters = confirm("Do you want to include numeric characters?");
+    let includeLowercaseCharacters = confirm("Do you want to include lowercase characters?");
+    let includeUppercaseCharacters = confirm("Do you want to include uppercase characters?");
+  
+    // Validate that at least one character type is selected
+    if (!(includeSpecialCharacters || includeNumericCharacters || includeLowercaseCharacters || includeUppercaseCharacters)) {
+      alert("You must select at least one character type.");
+      return; // Exit the function if no character type is selected
+    }
+  
+    console.log(passwordOptions);
+    return passwordOptions;  
+
+  }
+  
+
+
+
+
+
+
 
 // Function for getting a random element from an array
 function getRandom(arr) {
@@ -108,6 +147,7 @@ var generateBtn = document.querySelector('#generate');
 
 // Write password to the #password input
 function writePassword() {
+  getPasswordOptions ()
   var password = generatePassword();
   var passwordText = document.querySelector('#password');
 
