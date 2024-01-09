@@ -92,67 +92,65 @@ var upperCasedCharacters = [
 
 
 
-
-
-
-
-// Function to prompt user for password options
 function getPasswordOptions() {
-
-
-  function getPasswordOptions() {
-    let passwordLength = parseInt(prompt("How long do you want your password to be? (Must be between 8 and 128 characters)"));
-  
-    // Validate password length
-    if (passwordLength < 8 ||  passwordLength > 128) {
-      alert("Invalid input. Password length must be a number and between 8 - 128 characters.");
-      return; // Exit the function if the input is invalid
-    }
-  
-    let includeSpecialCharacters = confirm("Do you want to include special characters?");
-    let includeNumericCharacters = confirm("Do you want to include numeric characters?");
-    let includeLowercaseCharacters = confirm("Do you want to include lowercase characters?");
-    let includeUppercaseCharacters = confirm("Do you want to include uppercase characters?");
-  
-    // Validate that at least one character type is selected
-    if (!(includeSpecialCharacters || includeNumericCharacters || includeLowercaseCharacters || includeUppercaseCharacters)) {
-      alert("You must select at least one character type.");
-      return; // Exit the function if no character type is selected
-    }
-  
-    console.log(passwordOptions);
-    return passwordOptions;  
-
+  let passwordLength = parseInt(prompt("How long do you want your password to be? (Must be between 8 and 128 characters)"));
+  if (passwordLength < 8 || passwordLength > 128) {
+    alert("Invalid input. Password length must be between 8 - 128 characters.");
+    return;
   }
-  
+
+  let includeSpecialCharacters = confirm("Do you want to include special characters?");
+  let includeNumericCharacters = confirm("Do you want to include numeric characters?");
+  let includeLowercaseCharacters = confirm("Do you want to include lowercase characters?");
+  let includeUppercaseCharacters = confirm("Do you want to include uppercase characters?");
+
+  if (!(includeSpecialCharacters || includeNumericCharacters || includeLowercaseCharacters || includeUppercaseCharacters)) {
+    alert("You must select at least one character type.");
+    return; 
+  }
+
+  return {
+    passwordLength,
+    includeSpecialCharacters,
+    includeNumericCharacters,
+    includeLowercaseCharacters,
+    includeUppercaseCharacters,
+  };
 
 
-
-
-
-
-
-// Function for getting a random element from an array
-function getRandom(arr) {
-
+  console.log(getPasswordOptions()); 
 }
 
-// Function to generate password with user input
-function generatePassword() {
 
+function generateAndDisplayPassword() {
+  const options = getPasswordOptions();
+  if (!options) return; 
+
+  let combinedCharacters = [];
+
+  if (options.includeSpecialCharacters) {
+    combinedCharacters = combinedCharacters.concat(specialCharacters);
+  }
+  if (options.includeNumericCharacters) {
+    combinedCharacters = combinedCharacters.concat(numericCharacters);
+  }
+  if (options.includeLowercaseCharacters) {
+    combinedCharacters = combinedCharacters.concat(lowerCasedCharacters);
+  }
+  if (options.includeUppercaseCharacters) {
+    combinedCharacters = combinedCharacters.concat(upperCasedCharacters);
+  }
+
+  let generatedPassword = '';
+
+  for (let i = 0; i < options.passwordLength; i++) {
+    const randomCharacter = combinedCharacters[Math.floor(Math.random() * combinedCharacters.length)];
+    generatedPassword += randomCharacter;
+  }
+
+var password = generatedPassword
+  document.getElementById('password').value = generatedPassword;
 }
 
-// Get references to the #generate element
 var generateBtn = document.querySelector('#generate');
-
-// Write password to the #password input
-function writePassword() {
-  getPasswordOptions ()
-  var password = generatePassword();
-  var passwordText = document.querySelector('#password');
-
-  passwordText.value = password;
-}
-
-// Add event listener to generate button
-generateBtn.addEventListener('click', writePassword);
+generateBtn.addEventListener('click', generateAndDisplayPassword);
